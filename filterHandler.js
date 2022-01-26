@@ -51,3 +51,40 @@ class FilterHandler {
         location.reload();
     }
 }
+
+let Handler = new FilterHandler();
+
+let listParams = {
+    status: Handler.getParams("status"),
+    search: Handler.getParams("search"),
+    page: Handler.getParams("page"),
+};
+
+$('.js-status').on('click', function(event){
+    event.preventDefault();
+
+    var id = $(this).attr("href");
+    listParams.page = id;
+
+    Handler.addParams(listParams);
+    Handler.reload();
+});
+
+$('.js-search').on('keypress', function(event) {
+    if(event.which == 13) {
+        listParams.search = $(".js-search").val();
+    
+        Handler.addParams(listParams);
+        Handler.reload();
+    }
+});
+
+$('.js-page').on('click', function(event){
+    event.preventDefault();
+
+    var id = $(this).attr("href");
+    listParams.page = id;
+
+    Handler.addParams(listParams);
+    Handler.reload();
+});
