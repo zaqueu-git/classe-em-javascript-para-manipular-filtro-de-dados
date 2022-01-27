@@ -3,7 +3,6 @@ class FilterHandler {
     constructor() {
         this.path = this.getPath();
         this.url = this.getUrl();
-        this.setInputs();
     }
 
     getPath() {
@@ -18,7 +17,7 @@ class FilterHandler {
         this.url.searchParams.forEach(list);
 
         function list(value, key) {
-            document.getElementsByClassName(".js-" + key).value = value;
+            document.querySelector('.js-' + key).value = value;
         }
     }
 
@@ -52,39 +51,89 @@ class FilterHandler {
     }
 }
 
-let Handler = new FilterHandler();
-
-let listParams = {
-    status: Handler.getParams("status"),
-    search: Handler.getParams("search"),
-    page: Handler.getParams("page"),
-};
-
-$('.js-status').on('click', function(event){
-    event.preventDefault();
-
-    var id = $(this).attr("href");
-    listParams.page = id;
-
-    Handler.addParams(listParams);
-    Handler.reload();
-});
-
-$('.js-search').on('keypress', function(event) {
-    if(event.which == 13) {
-        listParams.search = $(".js-search").val();
-    
-        Handler.addParams(listParams);
-        Handler.reload();
+class PageFilter {
+    constructor() {
+        this.status;
+        this.search;
+        this.page;
     }
-});
+}
 
-$('.js-page').on('click', function(event){
-    event.preventDefault();
+document.addEventListener('DOMContentLoaded', myPage);
 
-    var id = $(this).attr("href");
-    listParams.page = id;
+function myPage() {
+    try {
+    
+        let filterHandler = new FilterHandler();
+        let pageFilter = new PageFilter();
 
-    Handler.addParams(listParams);
-    Handler.reload();
-});
+        pageFilter.status = filterHandler.getParams("status");
+        pageFilter.search = filterHandler.getParams("search");
+        pageFilter.page = filterHandler.getParams("page");
+        filterHandler.setInputs();
+
+        let elementStatus = document.querySelector('.js-status');
+        let elementSearch = document.querySelector('.js-search');
+        let elementPage = document.querySelector('.js-page');
+
+        elementStatus.addEventListener('click', statusHandler);
+        elementSearch.addEventListener('keypress', searchHandler);
+        elementPage.addEventListener('click', pageHandler);
+        
+        function statusHandler(event) {
+            try {
+
+                event.preventDefault();
+
+                pageFilter.status = elementStatus.getAttribute('data');
+                
+                return filterCallback();
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        
+        function searchHandler(event) {
+            try {
+
+                if(event.which == 13) {
+                    pageFilter.search = elementSearch.value;
+    
+                    return filterCallback();
+                }                
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        
+        function pageHandler(event) {
+            try {
+                
+                event.preventDefault();
+
+                pageFilter.page = elementPage.getAttribute('data');
+                
+                return filterCallback();
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        function filterCallback() {
+            try {
+
+                filterHandler.addParams(pageFilter);
+                filterHandler.reload();                
+
+            } catch (error) {
+                console.log(error);
+            }
+        }        
+
+    } catch (error) {
+        console.log(error);
+    }
+}
