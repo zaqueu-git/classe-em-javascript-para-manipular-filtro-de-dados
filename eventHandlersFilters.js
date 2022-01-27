@@ -76,16 +76,22 @@ function myPage() {
         let elementSearch = document.querySelector('.js-search');
         let elementPage = document.querySelector('.js-page');
 
-        elementStatus.addEventListener('click', statusHandler);
+        for (var i = 0; i < elementStatus.length; i++) {
+            elementStatus[i].addEventListener('click', statusHandler);
+        }
+        
+        for (var i = 0; i < elementPage.length; i++) {
+            elementPage[i].addEventListener('click', pageHandler);
+        }        
+        
         elementSearch.addEventListener('keypress', searchHandler);
-        elementPage.addEventListener('click', pageHandler);
         
         function statusHandler(event) {
             try {
 
                 event.preventDefault();
 
-                pageFilter.status = elementStatus.getAttribute('data');
+                pageFilter.status = this.getAttribute('data');
                 
                 return filterCallback();
 
@@ -98,7 +104,7 @@ function myPage() {
             try {
 
                 if(event.which == 13) {
-                    pageFilter.search = elementSearch.value;
+                    pageFilter.search = this.value;
     
                     return filterCallback();
                 }                
@@ -113,7 +119,7 @@ function myPage() {
                 
                 event.preventDefault();
 
-                pageFilter.page = elementPage.getAttribute('data');
+                pageFilter.page = this.getAttribute('data');
                 
                 return filterCallback();
 
