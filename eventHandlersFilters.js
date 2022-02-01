@@ -92,6 +92,8 @@ function myPage() {
                 event.preventDefault();
 
                 pageFilter.status = this.getAttribute('data');
+                pageFilter.search = "";
+                pageFilter.page = 1;                
                 
                 return filterCallback();
 
