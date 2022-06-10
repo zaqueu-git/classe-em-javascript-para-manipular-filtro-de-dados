@@ -1,4 +1,4 @@
-function filterHandler() {
+function filter() {
     this.path = window.location;
     this.url = new URL(this.path);
 
