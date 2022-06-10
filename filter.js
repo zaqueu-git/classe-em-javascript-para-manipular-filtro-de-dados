@@ -30,8 +30,6 @@ function filterHandler() {
     }
 
     this.setParams = function(fieldName, fieldValue) {
-        console.log(fieldValue);
-
         if (fieldValue != "") {
             this.url.searchParams.set(fieldName, fieldValue);
         } else {
